@@ -6,8 +6,6 @@ from starlite import (
     MediaType,
     Response,
     Starlite,
-    StaticFilesConfig,
-    TemplateConfig,
     asgi,
     delete,
     get,
@@ -97,12 +95,6 @@ app = Starlite(
         delete_task,
     ],
     plugins=[PiccoloORMPlugin()],
-    template_config=TemplateConfig(
-        directory="tasks/templates", engine=JinjaTemplateEngine
-    ),
-    static_files_config=[
-        StaticFilesConfig(directories=["static"], path="/static/"),
-    ],
     on_startup=[open_database_connection_pool],
     on_shutdown=[close_database_connection_pool],
 )
