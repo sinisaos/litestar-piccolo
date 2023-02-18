@@ -6,8 +6,6 @@ from starlite import (
     MediaType,
     Response,
     Starlite,
-    StaticFilesConfig,
-    TemplateConfig,
     asgi,
     delete,
     get,
@@ -18,6 +16,7 @@ from starlite.plugins.piccolo_orm import PiccoloORMPlugin
 from starlite.contrib.jinja import JinjaTemplateEngine
 from starlite.types import Receive, Scope, Send
 
+from accounts.endpoints import AuthController
 from tasks.endpoints import home
 from tasks.piccolo_app import APP_CONFIG
 from tasks.tables import Task
@@ -95,14 +94,9 @@ app = Starlite(
         create_task,
         update_task,
         delete_task,
+        AuthController,
     ],
     plugins=[PiccoloORMPlugin()],
-    template_config=TemplateConfig(
-        directory="tasks/templates", engine=JinjaTemplateEngine
-    ),
-    static_files_config=[
-        StaticFilesConfig(directories=["static"], path="/static/"),
-    ],
     on_startup=[open_database_connection_pool],
     on_shutdown=[close_database_connection_pool],
 )
