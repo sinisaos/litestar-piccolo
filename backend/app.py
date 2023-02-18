@@ -16,6 +16,7 @@ from starlite.plugins.piccolo_orm import PiccoloORMPlugin
 from starlite.contrib.jinja import JinjaTemplateEngine
 from starlite.types import Receive, Scope, Send
 
+from accounts.endpoints import AuthController
 from tasks.endpoints import home
 from tasks.piccolo_app import APP_CONFIG
 from tasks.tables import Task
@@ -93,6 +94,7 @@ app = Starlite(
         create_task,
         update_task,
         delete_task,
+        AuthController,
     ],
     plugins=[PiccoloORMPlugin()],
     on_startup=[open_database_connection_pool],
