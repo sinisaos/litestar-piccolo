@@ -1,12 +1,12 @@
 from piccolo_conf import *  # noqa
-
+from settings import DB_HOST, DB_PASSWORD, DB_PORT, DB_USER, TEST_DB_NAME
 
 DB = PostgresEngine(
     config={
-        "database": "piccolo_project_test",
-        "user": "postgres",
-        "password": "",
-        "host": "localhost",
-        "port": 5432,
+        "database": TEST_DB_NAME,
+        "user": DB_USER,
+        "password": DB_PASSWORD,
+        "host": DB_HOST,
+        "port": DB_PORT,
     }
 )
