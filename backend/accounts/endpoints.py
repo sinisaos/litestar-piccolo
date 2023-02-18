@@ -5,9 +5,9 @@ from piccolo_api.session_auth.tables import SessionsBase
 from starlite import Request
 from starlite.datastructures import Cookie
 from starlite.controller import Controller
-from starlite.handlers import post
+from starlite.handlers import post, delete
 from starlite.response import Response
-from starlite.status_codes import HTTP_201_CREATED
+from starlite.status_codes import HTTP_201_CREATED, HTTP_204_NO_CONTENT
 
 from accounts.schema import UserModelLogin, UserModelRegister
 from accounts.utils import current_user
