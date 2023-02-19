@@ -1,4 +1,5 @@
-from piccolo_conf import *  # noqa
+from piccolo.engine.postgres import PostgresEngine
+
 from settings import DB_HOST, DB_PASSWORD, DB_PORT, DB_USER, TEST_DB_NAME
 
 DB = PostgresEngine(

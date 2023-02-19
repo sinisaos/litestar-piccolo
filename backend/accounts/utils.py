@@ -1,8 +1,21 @@
 import typing as t
 
-from starlite import Request
 from piccolo.apps.user.tables import BaseUser
 from piccolo_api.session_auth.tables import SessionsBase
+from starlite import (
+    ASGIConnection,
+    BaseRouteHandler,
+    NotAuthorizedException,
+    Request,
+)
+
+
+# guard for protected endpoints
+def current_user_guard(
+    connection: ASGIConnection, _: BaseRouteHandler
+) -> None:
+    if not connection.cookies.get("id"):
+        raise NotAuthorizedException()
 
 
 async def current_user(request: Request) -> t.Dict[str, t.Any]:

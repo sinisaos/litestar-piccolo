@@ -1,1 +1,1 @@
-Add migrations using `piccolo migrations new home --auto`.
+Add migrations using `piccolo migrations new tasks --auto`.
