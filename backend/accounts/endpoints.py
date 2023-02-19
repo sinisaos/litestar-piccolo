@@ -40,7 +40,7 @@ class AuthController(Controller):
         await query.save().run()
         return {"message": "User created"}
 
-    @post(path="/login")
+    @post("/login")
     async def login(self, data: UserModelLogin) -> Response:
         """
         Login and authenticate user
@@ -81,14 +81,14 @@ class AuthController(Controller):
         response.delete_cookie(key="id")
         return response
 
-    @get(path="/profile", guards=[current_user_guard])
+    @get("/profile", guards=[current_user_guard])
     async def profile(self, request: Request) -> t.Dict[str, t.Any]:
         """
         User profile
         """
         return await current_user(request)
 
-    @get(path="/profile/tasks", guards=[current_user_guard])
+    @get("/profile/tasks", guards=[current_user_guard])
     async def profile_tasks(self, request: Request) -> t.List[TaskModelOut]:
         """
         User tasks
