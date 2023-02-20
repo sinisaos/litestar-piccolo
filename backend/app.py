@@ -1,10 +1,7 @@
-import typing as t
-
-from piccolo.engine import engine_finder
 from piccolo.apps.user.tables import BaseUser
+from piccolo.engine import engine_finder
 from piccolo_admin.endpoints import create_admin
-from starlite import Response, Starlite, asgi
-from starlite.types import Receive, Scope, Send
+from starlite import Starlite, asgi
 
 from accounts.endpoints import AuthController
 from tasks.endpoints import TaskController
@@ -13,7 +10,9 @@ from tasks.tables import Task
 
 # mounting Piccolo Admin
 @asgi("/admin/", is_mount=True)
-async def admin(scope: "Scope", receive: "Receive", send: "Send") -> None:
+async def admin(
+    scope: "Scope", receive: "Receive", send: "Send"  # noqa: F821
+) -> None:
     await create_admin(tables=[Task, BaseUser])(scope, receive, send)
 
 

@@ -1,8 +1,6 @@
 from piccolo.apps.migrations.auto.migration_manager import MigrationManager
-from piccolo.columns.column_types import Boolean
-from piccolo.columns.column_types import Varchar
+from piccolo.columns.column_types import Boolean, Varchar
 from piccolo.columns.indexes import IndexMethod
-
 
 ID = "2023-02-17T18:31:54:853171"
 VERSION = "0.105.0"

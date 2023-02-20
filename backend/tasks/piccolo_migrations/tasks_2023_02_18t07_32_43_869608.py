@@ -1,9 +1,6 @@
 from piccolo.apps.migrations.auto.migration_manager import MigrationManager
-from piccolo.columns.base import OnDelete
-from piccolo.columns.base import OnUpdate
-from piccolo.columns.column_types import ForeignKey
-from piccolo.columns.column_types import Serial
-from piccolo.columns.column_types import Timestamp
+from piccolo.columns.base import OnDelete, OnUpdate
+from piccolo.columns.column_types import ForeignKey, Serial, Timestamp
 from piccolo.columns.defaults.timestamp import TimestampNow
 from piccolo.columns.indexes import IndexMethod
 from piccolo.table import Table

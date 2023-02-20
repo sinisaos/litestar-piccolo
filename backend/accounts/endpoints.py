@@ -3,14 +3,16 @@ import typing as t
 from piccolo.apps.user.tables import BaseUser
 from piccolo_api.session_auth.tables import SessionsBase
 from starlite import Request
-from starlite.datastructures import Cookie
 from starlite.controller import Controller
-from starlite.handlers import post, delete
+from starlite.datastructures import Cookie
+from starlite.handlers import delete, get, post
 from starlite.response import Response
 from starlite.status_codes import HTTP_201_CREATED, HTTP_204_NO_CONTENT
 
 from accounts.schema import UserModelLogin, UserModelRegister
-from accounts.utils import current_user
+from accounts.utils import current_user, current_user_guard
+from tasks.schema import TaskModelOut
+from tasks.tables import Task
 
 
 class AuthController(Controller):
@@ -38,7 +40,7 @@ class AuthController(Controller):
         await query.save().run()
         return {"message": "User created"}
 
-    @post(path="/login")
+    @post("/login")
     async def login(self, data: UserModelLogin) -> Response:
         """
         Login and authenticate user
@@ -67,7 +69,7 @@ class AuthController(Controller):
         )
         return response
 
-    @post("/logout")
+    @post("/logout", guards=[current_user_guard])
     async def logout(self) -> Response:
         """
         Logout user
@@ -79,8 +81,32 @@ class AuthController(Controller):
         response.delete_cookie(key="id")
         return response
 
-    @delete("/delete")
+    @get("/profile", guards=[current_user_guard])
+    async def profile(self, request: Request) -> t.Dict[str, t.Any]:
+        """
+        User profile
+        """
+        return await current_user(request)
+
+    @get("/profile/tasks", guards=[current_user_guard])
+    async def profile_tasks(self, request: Request) -> t.List[TaskModelOut]:
+        """
+        User tasks
+        """
+        session_user = await current_user(request)
+        tasks = (
+            await Task.select()
+            .where(Task.task_user == session_user["user"]["id"])
+            .order_by(Task.id, ascending=False)
+            .run()
+        )
+        return tasks
+
+    @delete("/delete", guards=[current_user_guard])
     async def delete_user(self, request: Request) -> None:
+        """
+        Delete user
+        """
         session_user = await current_user(request)
         await BaseUser.delete().where(
             BaseUser.id == session_user["user"]["id"]

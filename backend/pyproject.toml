@@ -1,0 +1,10 @@
+[tool.ruff]
+line-length = 79
+select = ["F", "E", "W"]
+
+[tool.black]
+line-length = 79
+
+[tool.isort]
+profile = "black"
+line_length = 79
