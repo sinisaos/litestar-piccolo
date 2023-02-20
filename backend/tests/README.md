@@ -1,9 +1,10 @@
 # Testing
 
-Set a test database in `piccolo_conf_test.py`.
+Set a test database in ``piccolo_conf_test.py``.
 
 ```python
-from piccolo_conf import *  # noqa
+from piccolo.engine.postgres import PostgresEngine
+
 from settings import TEST_DB_NAME, DB_USER, DB_PASSWORD, DB_HOST, DB_PORT
 
 DB = PostgresEngine(
@@ -16,8 +17,8 @@ DB = PostgresEngine(
     }
 )
 ```
-Running tests from root directory.
+Running tests from ``backend`` directory.
 
-```
+```bash
 piccolo tester run
 ```
