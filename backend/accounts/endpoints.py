@@ -69,7 +69,7 @@ class AuthController(Controller):
         )
         return response
 
-    @post("/logout", guards=[current_user_guard])
+    @post("/logout")
     async def logout(self) -> Response:
         """
         Logout user

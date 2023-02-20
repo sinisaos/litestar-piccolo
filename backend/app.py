@@ -1,12 +1,13 @@
 from piccolo.apps.user.tables import BaseUser
 from piccolo.engine import engine_finder
 from piccolo_admin.endpoints import create_admin
+from piccolo_api.session_auth.tables import SessionsBase
 from starlite import Starlite, asgi
 
 from accounts.endpoints import AuthController
-from middleware import cors_config, csrf_config
 from tasks.endpoints import TaskController
 from tasks.tables import Task
+from utils.middleware import cors_config, csrf_config
 
 
 # mounting Piccolo Admin
@@ -14,7 +15,9 @@ from tasks.tables import Task
 async def admin(
     scope: "Scope", receive: "Receive", send: "Send"  # noqa: F821
 ) -> None:
-    await create_admin(tables=[Task, BaseUser])(scope, receive, send)
+    await create_admin(tables=[Task, BaseUser, SessionsBase])(
+        scope, receive, send
+    )
 
 
 async def open_database_connection_pool():
