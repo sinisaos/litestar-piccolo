@@ -1,21 +1,7 @@
-# piccolo_project
+Starter application template using [Piccolo ORM](https://piccolo-orm.com/) ecosystem (with [Starlite](https://starliteproject.dev/) framework) as backend and [Vue.js](https://vuejs.org/) as frontend.
 
-## Setup
+The template includes several useful things such as user authentication, user management (with user profile and crud dashboard), admin UI and more.
 
-### Install requirements
+For backend installation look at backend readme.
 
-```bash
-pip install -r requirements.txt
-```
-
-### Getting started guide
-
-```bash
-python main.py
-```
-
-### Running tests
-
-```bash
-piccolo tester run
-```
+For frontend installation look at frontend readme.
