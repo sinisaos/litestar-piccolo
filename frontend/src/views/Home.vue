@@ -67,7 +67,7 @@ export default {
         return {
             tasks: [],
             page: 1,
-            page_size: 2,
+            page_size: 15,
             totalPages: 0
         }
     },

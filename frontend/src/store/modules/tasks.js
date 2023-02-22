@@ -35,10 +35,7 @@ const mutations = {
   },
   setTask(state, task) {
     state.task = task
-  },
-  setPagination(state, pagination) {
-    state.pagination = pagination
-  },
+  }
 }
 
 export default {

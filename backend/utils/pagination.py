@@ -15,7 +15,7 @@ class Pagination:
         if self.page_size is None or self.page is None:
             query = (
                 table.select(table.all_columns(), table.get_readable())
-                .limit(2)
+                .limit(15)
                 .order_by(table._meta.primary_key, ascending=False)
             )
         else:

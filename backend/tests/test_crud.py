@@ -25,7 +25,7 @@ class TestCrud(TestCase):
         with TestClient(app=app) as client:
             response = client.get("/api/tasks")
             self.assertEqual(response.status_code, 200)
-            self.assertEqual(len(response.json()), 1)
+            self.assertEqual(len(response.json()["tasks"]), 1)
 
     def test_get_single_tasks(self):
         with TestClient(app=app) as client:
@@ -84,7 +84,7 @@ class TestCrud(TestCase):
 
             response = client.get("/api/tasks")
             self.assertEqual(response.status_code, 200)
-            self.assertEqual(len(response.json()), 2)
+            self.assertEqual(len(response.json()["tasks"]), 2)
 
             payload = {
                 "name": "Task 1001",
@@ -109,4 +109,4 @@ class TestCrud(TestCase):
 
             response = client.get("/api/tasks")
             self.assertEqual(response.status_code, 200)
-            self.assertEqual(len(response.json()), 1)
+            self.assertEqual(len(response.json()["tasks"]), 1)
