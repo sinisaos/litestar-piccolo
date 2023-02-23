@@ -2,12 +2,10 @@ import typing as t
 
 from piccolo.apps.user.tables import BaseUser
 from piccolo_api.session_auth.tables import SessionsBase
-from starlite import (
-    ASGIConnection,
-    BaseRouteHandler,
-    NotAuthorizedException,
-    Request,
-)
+from starlite import Request
+from starlite.connection import ASGIConnection
+from starlite.exceptions import NotAuthorizedException
+from starlite.handlers.base import BaseRouteHandler
 
 
 # guard for protected endpoints
