@@ -15,11 +15,6 @@ const actions = {
     await axios.post('api/tasks', task)
     context.dispatch('userTasks')
   },
-  async getTasks(context) {
-    const response = await axios.get('api/tasks')
-    console.log(response.data.rows)
-    context.commit('setTasks', response.data.rows)
-  },
   async singleTask(context, id) {
     const response = await axios.get(`api/tasks/${id}`)
     context.commit('setTask', response.data)
@@ -40,8 +35,8 @@ const mutations = {
   },
   setTask(state, task) {
     state.task = task
-  },
-};
+  }
+}
 
 export default {
   state,

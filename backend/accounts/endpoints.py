@@ -9,8 +9,8 @@ from starlite.handlers import delete, get, post
 from starlite.response import Response
 from starlite.status_codes import HTTP_201_CREATED, HTTP_204_NO_CONTENT
 
+from accounts.guards import current_user, current_user_guard
 from accounts.schema import UserModelLogin, UserModelRegister
-from accounts.utils import current_user, current_user_guard
 from tasks.schema import TaskModelOut
 from tasks.tables import Task
 

@@ -5,9 +5,10 @@ from starlite.controller import Controller
 from starlite.exceptions import NotFoundException
 from starlite.handlers import delete, get, patch, post
 
-from accounts.utils import current_user, current_user_guard
+from accounts.guards import current_user, current_user_guard
 from tasks.schema import TaskModelIn, TaskModelOut
 from tasks.tables import Task
+from utils.pagination import Pagination
 
 
 class TaskController(Controller):
@@ -15,12 +16,20 @@ class TaskController(Controller):
     tags = ["Task"]
 
     @get("/tasks")
-    async def tasks(self) -> t.List[TaskModelOut]:
-        tasks = await Task.select(
-            Task.all_columns(),
-            Task.get_readable(),
-        ).order_by(Task.id, ascending=False)
-        return tasks
+    async def tasks(
+        self,
+        request: Request,
+        page: t.Optional[int] = None,
+        page_size: t.Optional[int] = None,
+    ) -> t.List[TaskModelOut]:
+        paginator = Pagination(page=page, page_size=page_size)
+        tasks = await paginator.get_rows(Task, request)
+        return {
+            "tasks": tasks,
+            "total": await paginator.total_pages(Task),
+            "page": 1 if page is None else page,
+            "page_size": 15 if page_size is None else page_size,
+        }
 
     @get("/tasks/{task_id:int}")
     async def single_task(self, task_id: int) -> TaskModelOut:

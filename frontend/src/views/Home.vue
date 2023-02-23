@@ -23,6 +23,39 @@
                 </div>
             </div>
         </div>
+        <nav aria-label="page navigation" v-if="tasks.length > 0">
+            <ul class="pagination justify-content-center">
+                <li class="page-item" v-bind:class="{ disabled: page === 1 }">
+                    <a
+                        v-on:click.prevent="getTasks(page - 1)"
+                        tabindex="-1"
+                        class="page-link"
+                        href=""
+                        >Previous</a
+                    >
+                </li>
+                <li class="page-item" :key="n" v-for="n in totalPages">
+                    <a
+                        v-bind:class="{ active: n === page }"
+                        v-on:click.prevent="getTasks(n)"
+                        class="page-link"
+                        href=""
+                        >{{ n }}</a
+                    >
+                </li>
+                <li
+                    class="page-item"
+                    v-bind:class="{ disabled: page === totalPages }"
+                >
+                    <a
+                        v-on:click.prevent="getTasks(page + 1)"
+                        class="page-link"
+                        href=""
+                        >Next</a
+                    >
+                </li>
+            </ul>
+        </nav>
     </div>
 </template>
 <script>
@@ -32,7 +65,10 @@ import VueMomentsAgo from "vue-moments-ago"
 export default {
     data() {
         return {
-            tasks: []
+            tasks: [],
+            page: 1,
+            page_size: 15,
+            totalPages: 0
         }
     },
     components: {
@@ -44,14 +80,19 @@ export default {
         }
     },
     methods: {
-        async getTasks() {
-            let response = await axios.get("api/tasks")
-            this.tasks = response.data
+        async getTasks(pageNumber) {
+            let response = await axios.get(
+                `api/tasks?page=${pageNumber}&page_size=${this.page_size}`
+            )
+            this.tasks = response.data.tasks
+            this.page = response.data.page
+            this.page_size = response.data.page_size
+            this.totalPages = response.data.total
             return this.tasks
         }
     },
-    mounted() {
-        this.getTasks()
+    async mounted() {
+        await this.getTasks(this.page)
     }
 }
 </script>
