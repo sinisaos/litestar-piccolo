@@ -32,9 +32,13 @@ class TaskController(Controller):
         }
 
     @get("/tasks/{task_id:int}")
-    async def single_task(self, task_id: int) -> t.Dict[str, t.Any]:
-        task = await Task.objects().get(Task._meta.primary_key == task_id)
-        return task.__dict__
+    async def single_task(self, task_id: int) -> TaskModelOut:
+        task = (
+            await Task.select()
+            .where(Task._meta.primary_key == task_id)
+            .first()
+        )
+        return task
 
     @post("/tasks", guards=[current_user_guard])
     async def create_task(
