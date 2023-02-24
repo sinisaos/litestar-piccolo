@@ -7,7 +7,11 @@ from starlite.controller import Controller
 from starlite.datastructures import Cookie
 from starlite.handlers import delete, get, post
 from starlite.response import Response
-from starlite.status_codes import HTTP_201_CREATED, HTTP_204_NO_CONTENT
+from starlite.status_codes import (
+    HTTP_201_CREATED,
+    HTTP_204_NO_CONTENT,
+    HTTP_401_UNAUTHORIZED,
+)
 
 from accounts.guards import current_user, current_user_guard
 from accounts.schema import UserModelLogin, UserModelRegister
@@ -47,12 +51,14 @@ class AuthController(Controller):
         """
         payload = data.dict()
         # login user in
-        valid_user = await BaseUser.login(
+        valid_user: t.Any = await BaseUser.login(
             username=payload["username"], password=payload["password"]
         )
         if not valid_user:
-            user_error = "Invalid username or password"
-            return {"error": user_error}
+            response = Response(
+                content={"message": "Invalid username or password"},
+                status_code=HTTP_401_UNAUTHORIZED,
+            )
         # create session
         session = await SessionsBase.create_session(user_id=valid_user)
         response = Response(
@@ -97,7 +103,7 @@ class AuthController(Controller):
         tasks = (
             await Task.select()
             .where(Task.task_user == session_user["user"]["id"])
-            .order_by(Task.id, ascending=False)
+            .order_by(Task._meta.primary_key, ascending=False)
             .run()
         )
         return tasks
@@ -117,4 +123,3 @@ class AuthController(Controller):
             status_code=HTTP_204_NO_CONTENT,
         )
         response.delete_cookie(key="id")
-        return response

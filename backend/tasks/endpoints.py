@@ -21,7 +21,7 @@ class TaskController(Controller):
         request: Request,
         page: t.Optional[int] = None,
         page_size: t.Optional[int] = None,
-    ) -> t.List[TaskModelOut]:
+    ) -> t.Dict[str, t.Any]:
         paginator = Pagination(page=page, page_size=page_size)
         tasks = await paginator.get_rows(Task, request)
         return {
@@ -32,9 +32,9 @@ class TaskController(Controller):
         }
 
     @get("/tasks/{task_id:int}")
-    async def single_task(self, task_id: int) -> TaskModelOut:
-        task = await Task.objects().get(Task.id == task_id)
-        return task.to_dict()
+    async def single_task(self, task_id: int) -> t.Dict[str, t.Any]:
+        task = await Task.objects().get(Task._meta.primary_key == task_id)
+        return task.__dict__
 
     @post("/tasks", guards=[current_user_guard])
     async def create_task(
@@ -52,11 +52,10 @@ class TaskController(Controller):
         self, task_id: int, data: TaskModelIn, request: Request
     ) -> TaskModelOut:
         session_user = await current_user(request)
-        task = await Task.objects().get(Task.id == task_id)
+        task = await Task.objects().get(Task._meta.primary_key == task_id)
         if not task:
             raise NotFoundException("Task does not exist")
         for key, value in data.dict().items():
-            task.id = task_id
             task.task_user = session_user["user"]["id"]
             setattr(task, key, value)
 
@@ -65,7 +64,7 @@ class TaskController(Controller):
 
     @delete("/tasks/{task_id:int}", guards=[current_user_guard])
     async def delete_task(self, task_id: int) -> None:
-        task = await Task.objects().get(Task.id == task_id)
+        task = await Task.objects().get(Task._meta.primary_key == task_id)
         if not task:
             raise NotFoundException("Task does not exist")
         await task.remove()

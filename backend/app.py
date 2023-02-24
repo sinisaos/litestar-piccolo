@@ -1,3 +1,5 @@
+import typing as t
+
 from piccolo.apps.user.tables import BaseUser
 from piccolo.engine import engine_finder
 from piccolo_admin.endpoints import create_admin
@@ -8,6 +10,9 @@ from accounts.endpoints import AuthController
 from tasks.endpoints import TaskController
 from tasks.tables import Task
 from utils.middleware import cors_config, csrf_config
+
+if t.TYPE_CHECKING:
+    from starlite.types import Receive, Scope, Send
 
 
 # mounting Piccolo Admin
