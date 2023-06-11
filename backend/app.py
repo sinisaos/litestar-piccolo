@@ -1,10 +1,10 @@
 import typing as t
 
+from litestar import Litestar, asgi
 from piccolo.apps.user.tables import BaseUser
 from piccolo.engine import engine_finder
 from piccolo_admin.endpoints import create_admin
 from piccolo_api.session_auth.tables import SessionsBase
-from starlite import Starlite, asgi
 
 from accounts.endpoints import AuthController
 from tasks.endpoints import TaskController
@@ -12,7 +12,7 @@ from tasks.tables import Task
 from utils.middleware import cors_config, csrf_config
 
 if t.TYPE_CHECKING:
-    from starlite.types import Receive, Scope, Send
+    from litestar.types import Receive, Scope, Send
 
 
 # mounting Piccolo Admin
@@ -41,7 +41,7 @@ async def close_database_connection_pool():
         print("Unable to connect to the database")
 
 
-app = Starlite(
+app = Litestar(
     route_handlers=[
         admin,
         AuthController,

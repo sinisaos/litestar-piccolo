@@ -1,8 +1,8 @@
 from unittest import TestCase
 
+from litestar.testing import TestClient
 from piccolo.apps.user.tables import BaseUser
 from piccolo_api.session_auth.tables import SessionsBase
-from starlite.testing import TestClient
 
 from app import app
 

@@ -1,9 +1,9 @@
 import typing as t
 
-from starlite import Request
-from starlite.controller import Controller
-from starlite.exceptions import NotFoundException
-from starlite.handlers import delete, get, patch, post
+from litestar import Request
+from litestar.controller import Controller
+from litestar.exceptions import NotFoundException
+from litestar.handlers import delete, get, patch, post
 
 from accounts.guards import current_user, current_user_guard
 from tasks.schema import TaskModelIn, TaskModelOut

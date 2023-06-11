@@ -1,5 +1,5 @@
-from starlite.config.cors import CORSConfig
-from starlite.config.csrf import CSRFConfig
+from litestar.config.cors import CORSConfig
+from litestar.config.csrf import CSRFConfig
 
 from settings import SECRET_KEY
 

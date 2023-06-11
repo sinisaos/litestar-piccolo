@@ -1,11 +1,11 @@
 import typing as t
 
+from litestar import Request
+from litestar.connection import ASGIConnection
+from litestar.exceptions import NotAuthorizedException
+from litestar.handlers.base import BaseRouteHandler
 from piccolo.apps.user.tables import BaseUser
 from piccolo_api.session_auth.tables import SessionsBase
-from starlite import Request
-from starlite.connection import ASGIConnection
-from starlite.exceptions import NotAuthorizedException
-from starlite.handlers.base import BaseRouteHandler
 
 
 # guard for protected endpoints

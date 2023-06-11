@@ -1,6 +1,11 @@
-starlite
+litestar
 uvicorn
 jinja2
 piccolo[postgres]
 piccolo_admin
 python-dotenv
+pytest
+isort
+black
+mypy
+ruff
