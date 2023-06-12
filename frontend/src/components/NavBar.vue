@@ -3,7 +3,7 @@
         <nav class="navbar navbar-expand-md navbar-light">
             <div class="container">
                 <router-link class="navbar-brand" to="/"
-                    >Starlite | Piccolo</router-link
+                    >Litestar | Piccolo</router-link
                 >
                 <button
                     class="navbar-toggler"

@@ -2,8 +2,8 @@ import typing as t
 from dataclasses import dataclass
 from math import ceil
 
+from litestar import Request
 from piccolo.table import Table
-from starlite import Request
 
 
 @dataclass
