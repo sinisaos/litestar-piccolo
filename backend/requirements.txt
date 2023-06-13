@@ -5,7 +5,6 @@ piccolo[postgres]
 piccolo_admin
 python-dotenv
 pytest
-isort
 black
 mypy
 ruff
