@@ -5,15 +5,15 @@ from settings import SECRET_KEY
 
 # CSRF
 csrf_config = CSRFConfig(
-    secret=SECRET_KEY,
-    safe_methods=[
+    secret=str(SECRET_KEY),
+    safe_methods={
         "GET",
         "POST",
         "DELETE",
         "PUT",
         "PATCH",
         "OPTIONS",
-    ],
+    },
 )
 
 # CORS
