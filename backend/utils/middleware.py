@@ -1,11 +1,11 @@
 from litestar.config.cors import CORSConfig
 from litestar.config.csrf import CSRFConfig
 
-from settings import SECRET_KEY
+from config.base import settings
 
 # CSRF
 csrf_config = CSRFConfig(
-    secret=str(SECRET_KEY),
+    secret=str(settings.secret_key),
     safe_methods={
         "GET",
         "POST",

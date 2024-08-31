@@ -1,6 +1,12 @@
 [tool.ruff]
 line-length = 79
-select = ["F", "E", "W", "I001"]
+lint.select = ["F", "E", "W", "I"]
 
 [tool.black]
 line-length = 79
+
+[tool.coverage.run]
+omit = [
+    "**/piccolo_migrations/*",
+    "**/piccolo_app.py",
+]

@@ -21,15 +21,15 @@ Setup your db credentials in ``piccolo_conf.py``.
 ```python
 from piccolo.engine.postgres import PostgresEngine
 
-from settings import DB_HOST, DB_NAME, DB_PASSWORD, DB_PORT, DB_USER
+from config.main import settings
 
 DB = PostgresEngine(
     config={
-        "database": DB_NAME,
-        "user": DB_USER,
-        "password": DB_PASSWORD,
-        "host": DB_HOST,
-        "port": DB_PORT,
+        "database": settings.db_name,
+        "user": settings.db_user,
+        "password": settings.db_password,
+        "host": settings.db_host,
+        "port": settings.db_port,
     }
 )
 ```
@@ -37,27 +37,25 @@ DB = PostgresEngine(
 ### Install requirements
 
 ```bash
-pip install -r requirements.txt
+pip install -r requirements/requirements.txt
 ```
 
 ### Migrations
 
 ```bash
-piccolo migrations forwards session_auth
-piccolo migrations forwards user
-piccolo migrations forwards tasks
+./scripts/migrations.sh
 ```
 
 ### Create admin user
 
 ```bash
-piccolo user create
+./scripts/user.sh
 ```
 
 ### Getting started 
 
 ```bash
-python main.py
+./scripts/start.sh
 ```
 
 After site is running log in as admin user on [localhost:8000/admin/](http://localhost:8000/admin/) or visit

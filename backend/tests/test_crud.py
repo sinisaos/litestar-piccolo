@@ -5,8 +5,8 @@ from piccolo.apps.user.tables import BaseUser
 from piccolo.testing.model_builder import ModelBuilder
 from piccolo_api.session_auth.tables import SessionsBase
 
-from app import app
-from tasks.tables import Task
+from apps.tasks.tables import Task
+from main import app
 
 
 class TestCrud(TestCase):
@@ -65,6 +65,9 @@ class TestCrud(TestCase):
 
             cookies = {"id": login_response.cookies["id"]}
 
+            # set cookies
+            client.cookies = cookies
+
             # perform crud operation on protected routes
             user = BaseUser.select().run_sync()[0]
 
@@ -74,11 +77,7 @@ class TestCrud(TestCase):
                 "task_user": user["id"],
             }
 
-            response = client.post(
-                "/api/tasks",
-                json=payload,
-                cookies=cookies,
-            )
+            response = client.post("/api/tasks", json=payload)
             self.assertEqual(response.status_code, 201)
             self.assertEqual(response.json()["id"], 1)
 
@@ -92,20 +91,32 @@ class TestCrud(TestCase):
                 "task_user": user["id"],
             }
 
-            response = client.patch(
-                "/api/tasks/1",
-                json=payload,
-                cookies=cookies,
-            )
+            response = client.patch("/api/tasks/1", json=payload)
             self.assertEqual(response.status_code, 200)
             self.assertEqual(response.json()["name"], "Task 1001")
             self.assertEqual(response.json()["completed"], True)
 
-            response = client.delete(
-                "/api/tasks/1",
-                cookies=cookies,
+            # exception if task does not exists
+            response = client.patch("/api/tasks/10", json=payload)
+            self.assertEqual(response.status_code, 404)
+            self.assertEqual(
+                response.json(),
+                {"status_code": 404, "detail": "Task does not exist"},
             )
+
+            response_profile_tasks = client.get("/accounts/profile/tasks")
+            self.assertEqual(response_profile_tasks.status_code, 200)
+
+            response = client.delete("/api/tasks/1")
             self.assertEqual(response.status_code, 204)
+
+            # exception if task does not exists
+            response = client.delete("/api/tasks/10")
+            self.assertEqual(response.status_code, 404)
+            self.assertEqual(
+                response.json(),
+                {"status_code": 404, "detail": "Task does not exist"},
+            )
 
             response = client.get("/api/tasks")
             self.assertEqual(response.status_code, 200)

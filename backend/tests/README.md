@@ -5,20 +5,32 @@ Set a test database in ``piccolo_conf_test.py``.
 ```python
 from piccolo.engine.postgres import PostgresEngine
 
-from settings import TEST_DB_NAME, DB_USER, DB_PASSWORD, DB_HOST, DB_PORT
+from config.main import settings
 
 DB = PostgresEngine(
     config={
-        "database": TEST_DB_NAME,
-        "user": DB_USER,
-        "password": DB_PASSWORD,
-        "host": DB_HOST,
-        "port": DB_PORT,
+        "database": settings.test_db_name,
+        "user": settings.db_user,
+        "password": settings.db_password,
+        "host": settings.db_host,
+        "port": settings.db_port,
     }
 )
 ```
-Running tests from ``backend`` directory.
+### Install test requirements
 
 ```bash
-piccolo tester run
+pip install -r requirements/test-requirements.txt
+```
+
+### Running tests from ``backend`` directory.
+
+```bash
+./scripts/test.sh
+```
+
+### Linting
+
+```bash
+./scripts/lint.sh
 ```

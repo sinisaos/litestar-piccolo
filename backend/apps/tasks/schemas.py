@@ -2,7 +2,7 @@ import typing as t
 
 from piccolo_api.crud.serializers import create_pydantic_model
 
-from tasks.tables import Task
+from apps.tasks.tables import Task
 
 # task models
 TaskModelIn: t.Any = create_pydantic_model(

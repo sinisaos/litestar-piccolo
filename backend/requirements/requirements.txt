@@ -3,8 +3,4 @@ uvicorn
 jinja2
 piccolo[postgres]
 piccolo_admin
-python-dotenv
-pytest
-black
-mypy
-ruff
+pydantic_settings

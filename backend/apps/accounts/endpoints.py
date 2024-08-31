@@ -8,15 +8,12 @@ from litestar.response import Response
 from litestar.status_codes import (
     HTTP_201_CREATED,
     HTTP_204_NO_CONTENT,
-    HTTP_401_UNAUTHORIZED,
 )
-from piccolo.apps.user.tables import BaseUser
-from piccolo_api.session_auth.tables import SessionsBase
 
-from accounts.guards import current_user, current_user_guard
-from accounts.schema import UserModelLogin, UserModelRegister
-from tasks.schema import TaskModelOut
-from tasks.tables import Task
+from apps.accounts.guards import current_user, current_user_guard
+from apps.accounts.schemas import UserModelLogin, UserModelRegister
+from apps.accounts.services import auth_service
+from apps.tasks.schemas import TaskModelOut
 
 
 class AuthController(Controller):
@@ -28,39 +25,14 @@ class AuthController(Controller):
         """
         Register user
         """
-        payload = data.dict()
-        if (
-            await BaseUser.exists()
-            .where(BaseUser.email == payload["email"])
-            .run()
-            or await BaseUser.exists()
-            .where(BaseUser.username == payload["username"])
-            .run()
-        ):
-            user_error = "User with that email or username already exists."
-            return {"error": user_error}
-        # save user
-        query = BaseUser(**payload)
-        await query.save().run()
-        return {"message": "User created"}
+        return await auth_service.user_register(data=data)
 
     @post("/login")
     async def login(self, data: UserModelLogin) -> Response:
         """
         Login and authenticate user
         """
-        payload = data.dict()
-        # login user in
-        valid_user: t.Any = await BaseUser.login(
-            username=payload["username"], password=payload["password"]
-        )
-        if not valid_user:
-            response = Response(
-                content={"message": "Invalid username or password"},
-                status_code=HTTP_401_UNAUTHORIZED,
-            )
-        # create session
-        session = await SessionsBase.create_session(user_id=valid_user)
+        session = await auth_service.user_login(data=data)
         response = Response(
             content={"message": "Succesfully logged in"},
             status_code=HTTP_201_CREATED,
@@ -100,13 +72,7 @@ class AuthController(Controller):
         User tasks
         """
         session_user = await current_user(request)
-        tasks = (
-            await Task.select()
-            .where(Task.task_user == session_user["user"]["id"])
-            .order_by(Task._meta.primary_key, ascending=False)
-            .run()
-        )
-        return tasks
+        return await auth_service.user_profile_tasks(session_user=session_user)
 
     @delete("/delete", guards=[current_user_guard])
     async def delete_user(self, request: Request) -> None:
@@ -114,9 +80,7 @@ class AuthController(Controller):
         Delete user
         """
         session_user = await current_user(request)
-        await BaseUser.delete().where(
-            BaseUser.id == session_user["user"]["id"]
-        ).run()
+        await auth_service.user_delete(session_user=session_user)
 
         response = Response(
             content=None,

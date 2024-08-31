@@ -4,7 +4,7 @@ from litestar.testing import TestClient
 from piccolo.apps.user.tables import BaseUser
 from piccolo_api.session_auth.tables import SessionsBase
 
-from app import app
+from main import app
 
 
 class TestAuth(TestCase):
@@ -34,6 +34,24 @@ class TestAuth(TestCase):
                 {"message": "User created"},
             )
 
+            payload = {
+                "username": "user",
+                "email": "user@user.com",
+                "password": "1234",
+            }
+            response = client.post(
+                "/accounts/register",
+                json=payload,
+            )
+            self.assertEqual(
+                response.json(),
+                {
+                    "error": (
+                        "User with that email or username already exists."
+                    ),
+                },
+            )
+
             # user login
             payload = {
                 "username": "user",
@@ -53,6 +71,23 @@ class TestAuth(TestCase):
             self.assertEqual(response.status_code, 201)
             self.assertEqual(
                 response.json(), {"message": "Succesfully logged in"}
+            )
+
+            # user login failed
+            payload = {
+                "username": "wronguser",
+                "password": "wronguser1234",
+            }
+
+            response = client.post(
+                "/accounts/login",
+                json=payload,
+            )
+
+            self.assertEqual(response.status_code, 401)
+            self.assertEqual(
+                response.json(),
+                {"status_code": 401, "detail": "Invalid username or password"},
             )
 
             # user logout
@@ -79,6 +114,11 @@ class TestAuth(TestCase):
             self.assertEqual(
                 response.json(), {"message": "Succesfully logged in"}
             )
+
+            response = client.get(
+                "/accounts/profile",
+            )
+            self.assertEqual(response.status_code, 200)
 
             response_delete = client.delete(
                 "/accounts/delete",
