@@ -25,7 +25,16 @@
                                     name="username"
                                     v-model="username"
                                     class="form-control"
+                                    :class="{
+                                        'is-invalid': v$.username.$error
+                                    }"
                                 />
+                                <div
+                                    v-if="!v$.username.required"
+                                    class="invalid-feedback"
+                                >
+                                    Username is required
+                                </div>
                             </div>
                             <div class="mb-3">
                                 <label for="password" class="form-label"
@@ -36,7 +45,22 @@
                                     name="password"
                                     v-model="password"
                                     class="form-control"
+                                    :class="{
+                                        'is-invalid': v$.password.$error
+                                    }"
                                 />
+                                <div
+                                    v-if="v$.password.$error"
+                                    class="invalid-feedback"
+                                >
+                                    <span v-if="!v$.password.required"
+                                        >Password is required</span
+                                    >
+                                    <span v-if="!v$.password.minLength"
+                                        >Password must be at least 6
+                                        characters</span
+                                    >
+                                </div>
                             </div>
                             <button type="submit" class="btn btn-primary">
                                 Submit
@@ -56,15 +80,25 @@
 </template>
 
 <script>
+import { defineComponent } from "vue"
 import { mapActions } from "vuex"
+import { useVuelidate } from "@vuelidate/core"
+import { required, minLength } from "@vuelidate/validators"
 
-export default {
+export default defineComponent({
+    setup() {
+        return { v$: useVuelidate() }
+    },
     data() {
         return {
             username: "",
             password: "",
             error: false
         }
+    },
+    validations: {
+        username: { required },
+        password: { required, minLength: minLength(6) }
     },
     methods: {
         ...mapActions(["loginUser", "registerUser"]),
@@ -81,6 +115,6 @@ export default {
                 })
         }
     }
-}
+})
 </script>
 

@@ -48,9 +48,10 @@
 <script>
 import { mapGetters, mapActions } from "vuex"
 
-import CreateTask from "@/components/CreateTask.vue"
+import CreateTask from "../components/CreateTask.vue"
+import { defineComponent } from "vue"
 
-export default {
+export default defineComponent({
     components: {
         CreateTask
     },
@@ -69,5 +70,5 @@ export default {
                 }
         }
     }
-}
+})
 </script>

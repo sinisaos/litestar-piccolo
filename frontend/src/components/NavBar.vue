@@ -112,9 +112,10 @@
 </template>
 
 <script>
+import { defineComponent } from "vue"
 import { mapGetters } from "vuex"
 
-export default {
+export default defineComponent({
     data() {
         return {
             userTheme: "light-theme"
@@ -147,7 +148,7 @@ export default {
             document.querySelector("#navbarScroll").classList.remove("show")
         }
     }
-}
+})
 </script>
 
 <style lang="less">

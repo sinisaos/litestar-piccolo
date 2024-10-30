@@ -34,9 +34,10 @@
 </template>
 
 <script>
+import { defineComponent } from "vue"
 import { mapGetters, mapActions } from "vuex"
 
-export default {
+export default defineComponent({
     data() {
         return {
             name: "",
@@ -62,7 +63,7 @@ export default {
             this.name = this.completed = this.created = ""
         }
     }
-}
+})
 </script>
 
 <style lang="less" scoped>

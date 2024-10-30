@@ -18,7 +18,7 @@ csrf_config = CSRFConfig(
 
 # CORS
 cors_config = CORSConfig(
-    allow_origins=["http://localhost:8080"],
+    allow_origins=["http://localhost:5173"],
     allow_methods=[
         "GET",
         "POST",
