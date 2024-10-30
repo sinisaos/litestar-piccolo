@@ -29,12 +29,6 @@
                                         'is-invalid': v$.username.$error
                                     }"
                                 />
-                                <div
-                                    v-if="!v$.username.required"
-                                    class="invalid-feedback"
-                                >
-                                    Username is required
-                                </div>
                             </div>
                             <div class="mb-3">
                                 <label for="password" class="form-label"
@@ -49,23 +43,11 @@
                                         'is-invalid': v$.password.$error
                                     }"
                                 />
-                                <div
-                                    v-if="v$.password.$error"
-                                    class="invalid-feedback"
-                                >
-                                    <span v-if="!v$.password.required"
-                                        >Password is required</span
-                                    >
-                                    <span v-if="!v$.password.minLength"
-                                        >Password must be at least 6
-                                        characters</span
-                                    >
-                                </div>
                             </div>
                             <button type="submit" class="btn btn-primary">
                                 Submit
                             </button>
-                            <p class="float-end">
+                            <p class="account">
                                 Don't have account
                                 <router-link to="/register"
                                     >Sign Up</router-link
@@ -103,8 +85,12 @@ export default defineComponent({
     methods: {
         ...mapActions(["loginUser", "registerUser"]),
         async submit() {
-            let username = this.username
-            let password = this.password
+            const username = this.username
+            const password = this.password
+            this.v$.$touch()
+            if (this.v$.$invalid) {
+                return
+            }
             await this.$store
                 .dispatch("loginUser", { username, password })
                 .then(() => {
@@ -117,4 +103,10 @@ export default defineComponent({
     }
 })
 </script>
+
+<style lang="less" scoped>
+.account {
+    padding-top: 1rem;
+}
+</style>
 

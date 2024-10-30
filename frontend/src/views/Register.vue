@@ -113,7 +113,7 @@
                             <button type="submit" class="btn btn-primary">
                                 Submit
                             </button>
-                            <p class="float-end">
+                            <p class="account">
                                 Already have account
                                 <router-link to="/login">Sign In</router-link>
                             </p>
@@ -148,7 +148,7 @@ export default defineComponent({
         return {
             username: { required },
             email: { required, email },
-            password: { required, minLength: minLength(8) },
+            password: { required, minLength: minLength(6) },
             passwordConfirmation: {
                 required,
                 sameAsPassword: sameAs(this.password)
@@ -183,8 +183,8 @@ export default defineComponent({
 })
 </script>
 
-<style scoped>
-.float-end {
-    padding-top: 0.5rem;
+<style lang="less" scoped>
+.account {
+    padding-top: 1rem;
 }
 </style>

@@ -1,15 +1,10 @@
 import { createApp } from 'vue'
-// import { createBootstrap } from 'bootstrap-vue-next'
 import axios from 'axios'
 import Cookies from "js-cookie"
 
 import App from './App.vue'
 import router from './router'
 import store from './store'
-
-// // Add the necessary CSS
-// import 'bootstrap/dist/css/bootstrap.css'
-// import 'bootstrap-vue-next/dist/bootstrap-vue-next.css'
 
 axios.defaults.withCredentials = true
 axios.defaults.baseURL = 'http://localhost:8000/'
@@ -39,7 +34,6 @@ axios.interceptors.response.use(undefined, function (error) {
 })
 
 const app = createApp(App)
-//app.use(createBootstrap())
 app.use(store)
 app.use(router)
 app.mount('#app')
