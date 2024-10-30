@@ -25,9 +25,6 @@
                                     name="username"
                                     v-model="username"
                                     class="form-control"
-                                    :class="{
-                                        'is-invalid': v$.username.$error
-                                    }"
                                 />
                             </div>
                             <div class="mb-3">
@@ -39,9 +36,6 @@
                                     name="password"
                                     v-model="password"
                                     class="form-control"
-                                    :class="{
-                                        'is-invalid': v$.password.$error
-                                    }"
                                 />
                             </div>
                             <button type="submit" class="btn btn-primary">
@@ -64,13 +58,8 @@
 <script>
 import { defineComponent } from "vue"
 import { mapActions } from "vuex"
-import { useVuelidate } from "@vuelidate/core"
-import { required, minLength } from "@vuelidate/validators"
 
 export default defineComponent({
-    setup() {
-        return { v$: useVuelidate() }
-    },
     data() {
         return {
             username: "",
@@ -78,19 +67,11 @@ export default defineComponent({
             error: false
         }
     },
-    validations: {
-        username: { required },
-        password: { required, minLength: minLength(6) }
-    },
     methods: {
         ...mapActions(["loginUser", "registerUser"]),
         async submit() {
             const username = this.username
             const password = this.password
-            this.v$.$touch()
-            if (this.v$.$invalid) {
-                return
-            }
             await this.$store
                 .dispatch("loginUser", { username, password })
                 .then(() => {
