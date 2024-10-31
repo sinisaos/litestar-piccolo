@@ -26,7 +26,7 @@
                                     v-model="username"
                                     class="form-control"
                                     :class="{
-                                        'is-invalid': $v.username.$error
+                                        'is-invalid': v$.username.$error
                                     }"
                                 />
                             </div>
@@ -39,16 +39,16 @@
                                     name="email"
                                     v-model="email"
                                     class="form-control"
-                                    :class="{ 'is-invalid': $v.email.$error }"
+                                    :class="{ 'is-invalid': v$.email.$error }"
                                 />
                                 <div
-                                    v-if="$v.email.$error"
+                                    v-if="v$.email.$error"
                                     class="invalid-feedback"
                                 >
-                                    <span v-if="!$v.email.required"
+                                    <span v-if="!v$.email.required"
                                         >Email is required</span
                                     >
-                                    <span v-if="!$v.email.email"
+                                    <span v-if="!v$.email.email"
                                         >Email is invalid</span
                                     >
                                 </div>
@@ -63,17 +63,17 @@
                                     v-model="password"
                                     class="form-control"
                                     :class="{
-                                        'is-invalid': $v.password.$error
+                                        'is-invalid': v$.password.$error
                                     }"
                                 />
                                 <div
-                                    v-if="$v.password.$error"
+                                    v-if="v$.password.$error"
                                     class="invalid-feedback"
                                 >
-                                    <span v-if="!$v.password.required"
+                                    <span v-if="!v$.password.required"
                                         >Password is required</span
                                     >
-                                    <span v-if="!$v.password.minLength"
+                                    <span v-if="!v$.password.minLength"
                                         >Password must be at least 6
                                         characters</span
                                     >
@@ -90,20 +90,20 @@
                                     class="form-control"
                                     :class="{
                                         'is-invalid':
-                                            $v.passwordConfirmation.$error
+                                            v$.passwordConfirmation.$error
                                     }"
                                 />
                                 <div
-                                    v-if="$v.passwordConfirmation.$error"
+                                    v-if="v$.passwordConfirmation.$error"
                                     class="invalid-feedback"
                                 >
                                     <span
-                                        v-if="!$v.passwordConfirmation.required"
+                                        v-if="!v$.passwordConfirmation.required"
                                         >Confirm Password is required</span
                                     >
                                     <span
                                         v-else-if="
-                                            !$v.passwordConfirmation
+                                            !v$.passwordConfirmation
                                                 .sameAsPassword
                                         "
                                         >Passwords must match</span
@@ -113,7 +113,7 @@
                             <button type="submit" class="btn btn-primary">
                                 Submit
                             </button>
-                            <p class="float-end">
+                            <p class="account">
                                 Already have account
                                 <router-link to="/login">Sign In</router-link>
                             </p>
@@ -127,9 +127,14 @@
 
 <script>
 import axios from "axios"
-import { required, email, minLength, sameAs } from "vuelidate/lib/validators"
+import { defineComponent } from "vue"
+import { useVuelidate } from "@vuelidate/core"
+import { required, email, minLength, sameAs } from "@vuelidate/validators"
 
-export default {
+export default defineComponent({
+    setup() {
+        return { v$: useVuelidate() }
+    },
     data() {
         return {
             username: "",
@@ -139,11 +144,16 @@ export default {
             error: ""
         }
     },
-    validations: {
-        username: { required },
-        email: { required, email },
-        password: { required, minLength: minLength(6) },
-        passwordConfirmation: { required, sameAsPassword: sameAs("password") }
+    validations() {
+        return {
+            username: { required },
+            email: { required, email },
+            password: { required, minLength: minLength(6) },
+            passwordConfirmation: {
+                required,
+                sameAsPassword: sameAs(this.password)
+            }
+        }
     },
     methods: {
         async submit() {
@@ -153,8 +163,8 @@ export default {
                 password: this.password,
                 passwordConfirm: this.passwordConfirm
             }
-            this.$v.$touch()
-            if (this.$v.$invalid) {
+            this.v$.$touch()
+            if (this.v$.$invalid) {
                 return
             }
             await axios.post("accounts/register", payload).then((response) => {
@@ -170,11 +180,11 @@ export default {
             })
         }
     }
-}
+})
 </script>
 
-<style scoped>
-.float-end {
-    padding-top: 0.5rem;
+<style lang="less" scoped>
+.account {
+    padding-top: 1rem;
 }
 </style>

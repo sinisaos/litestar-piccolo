@@ -41,7 +41,7 @@
                             <button type="submit" class="btn btn-primary">
                                 Submit
                             </button>
-                            <p class="float-end">
+                            <p class="account">
                                 Don't have account
                                 <router-link to="/register"
                                     >Sign Up</router-link
@@ -56,9 +56,10 @@
 </template>
 
 <script>
+import { defineComponent } from "vue"
 import { mapActions } from "vuex"
 
-export default {
+export default defineComponent({
     data() {
         return {
             username: "",
@@ -69,8 +70,8 @@ export default {
     methods: {
         ...mapActions(["loginUser", "registerUser"]),
         async submit() {
-            let username = this.username
-            let password = this.password
+            const username = this.username
+            const password = this.password
             await this.$store
                 .dispatch("loginUser", { username, password })
                 .then(() => {
@@ -81,6 +82,12 @@ export default {
                 })
         }
     }
-}
+})
 </script>
+
+<style lang="less" scoped>
+.account {
+    padding-top: 1rem;
+}
+</style>
 

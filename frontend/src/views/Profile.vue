@@ -3,34 +3,19 @@
         <h2>Profile</h2>
         <ul class="list-group" v-if="loggedUser">
             <li
-                class="
-                    list-group-item
-                    d-flex
-                    justify-content-between
-                    align-items-center
-                "
+                class="list-group-item d-flex justify-content-between align-items-center"
             >
                 <strong>Username</strong>
                 <span>{{ loggedUser.user.username }}</span>
             </li>
             <li
-                class="
-                    list-group-item
-                    d-flex
-                    justify-content-between
-                    align-items-center
-                "
+                class="list-group-item d-flex justify-content-between align-items-center"
             >
                 <strong>Email</strong>
                 <span>{{ loggedUser.user.email }}</span>
             </li>
             <li
-                class="
-                    list-group-item
-                    d-flex
-                    justify-content-between
-                    align-items-center
-                "
+                class="list-group-item d-flex justify-content-between align-items-center"
             >
                 <strong>Last login</strong>
                 <span>{{
@@ -38,27 +23,17 @@
                 }}</span>
             </li>
             <li
-                class="
-                    list-group-item
-                    d-flex
-                    justify-content-between
-                    align-items-center
-                "
+                class="list-group-item d-flex justify-content-between align-items-center"
             >
                 <strong
                     ><router-link to="/dashboard">Tasks</router-link></strong
                 >
                 <span class="badge bg-primary rounded-pill">{{
-                    tasks.length
+                    tasks?.length
                 }}</span>
             </li>
             <li
-                class="
-                    list-group-item
-                    d-flex
-                    justify-content-between
-                    align-items-center
-                "
+                class="list-group-item d-flex justify-content-between align-items-center"
             >
                 <button v-on:click="deleteAccount()" class="btn btn-danger">
                     Delete Account
@@ -69,9 +44,10 @@
 </template>
 
 <script>
+import { defineComponent } from "vue"
 import { mapGetters, mapActions } from "vuex"
 
-export default {
+export default defineComponent({
     computed: {
         ...mapGetters({ loggedUser: "stateUser", tasks: "stateTasks" })
     },
@@ -92,5 +68,5 @@ export default {
         this.$store.dispatch("userTasks")
         this.$store.dispatch("userProfile")
     }
-}
+})
 </script>

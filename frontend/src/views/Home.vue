@@ -8,12 +8,8 @@
                             Posted by
                             <span
                                 ><b>{{ task.readable }}</b>
-                                <vue-moments-ago
-                                    prefix=""
-                                    suffix="ago"
-                                    :date="task.created_at"
-                                ></vue-moments-ago
-                            ></span>
+                                <i> on {{ formatDate(task.created_at) }}</i>
+                            </span>
                         </p>
                         <h2>
                             {{ task.name }}
@@ -60,9 +56,10 @@
 </template>
 <script>
 import axios from "axios"
-import VueMomentsAgo from "vue-moments-ago"
+import dayjs from "dayjs"
+import { defineComponent } from "vue"
 
-export default {
+export default defineComponent({
     data() {
         return {
             tasks: [],
@@ -71,15 +68,16 @@ export default {
             totalPages: 0
         }
     },
-    components: {
-        VueMomentsAgo
-    },
     computed: {
         isLoggedIn() {
             return this.$store.getters.isAuthenticated
         }
     },
     methods: {
+        formatDate(dateString) {
+            const date = dayjs(dateString)
+            return date.format("MMMM D, YYYY")
+        },
         async getTasks(pageNumber) {
             let response = await axios.get(
                 `api/tasks?page=${pageNumber}&page_size=${this.page_size}`
@@ -94,11 +92,6 @@ export default {
     async mounted() {
         await this.getTasks(this.page)
     }
-}
+})
 </script>
 
-<style lang="less" scoped>
-.vue-moments-ago {
-    font-size: 1rem;
-}
-</style>

@@ -1,16 +1,11 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-
-import store from '@/store'
-
-import Home from '@/views/Home.vue'
-import Login from '@/views/Login'
-import Register from '@/views/Register'
-import EditTask from '@/views/EditTask'
-import Profile from '@/views/Profile'
-import Dashboard from '@/views/Dashboard'
-
-Vue.use(VueRouter);
+import { createMemoryHistory, createRouter } from 'vue-router'
+import store from '../store'
+import Home from '../views/Home.vue'
+import Login from '../views/Login.vue'
+import Register from '../views/Register.vue'
+import EditTask from '../views/EditTask.vue'
+import Profile from '../views/Profile.vue'
+import Dashboard from '../views/Dashboard.vue'
 
 const routes = [
   {
@@ -49,9 +44,8 @@ const routes = [
   },
 ]
 
-const router = new VueRouter({
-  mode: 'history',
-  base: process.env.BASE_URL,
+const router = createRouter({
+  history: createMemoryHistory(),
   routes,
 })
 
