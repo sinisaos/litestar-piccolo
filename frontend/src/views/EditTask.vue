@@ -1,27 +1,40 @@
 <template>
-    <div class="container">
-        <h2>Edit task</h2>
-        <hr />
-        <div v-if="task">
-            <form @submit.prevent="submit">
-                <div class="mb-3">
-                    <label for="name" class="form-label">Name</label>
-                    <input
-                        type="text"
-                        name="name"
-                        v-model="form.name"
-                        class="form-control"
-                    />
+    <div class="container mx-auto py-10 my-15">
+        <div class="card shadow">
+            <div class="card-body">
+                <h4 class="card-title mb-2.5">Edit task</h4>
+                <div v-if="task">
+                    <form @submit.prevent="submit">
+                        <div class="mb-3">
+                            <label class="label label-text" for="name"
+                                >Name</label
+                            >
+                            <input
+                                type="text"
+                                name="name"
+                                v-model="form.name"
+                                class="input max-w-lg"
+                            />
+                        </div>
+                        <div class="mb-3">
+                            <label class="label label-text" for="completed"
+                                >Completed</label
+                            >
+                            <select
+                                class="select max-w-lg appearance-none"
+                                aria-label="select"
+                                v-model="form.completed"
+                            >
+                                <option value="false">False</option>
+                                <option value="true">True</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            Submit
+                        </button>
+                    </form>
                 </div>
-                <div class="mb-3">
-                    <label for="completed" class="form-label">Completed</label>
-                    <select class="form-select" v-model="form.completed">
-                        <option value="false">False</option>
-                        <option value="true">True</option>
-                    </select>
-                </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </form>
+            </div>
         </div>
     </div>
 </template>
@@ -32,7 +45,8 @@ import { mapGetters, mapActions } from "vuex"
 
 export default defineComponent({
     props: {
-        id: Number
+        id: [Number, String],
+        required: true
     },
     data() {
         return {

@@ -1,36 +1,43 @@
 <template>
-    <section>
+    <div class="m-2">
         <button
             type="button"
             class="btn btn-success"
             v-on:click="isShow = !isShow"
-            id="create-button"
         >
             Create task
         </button>
         <div v-if="isShow">
-            <form ref="anyName" @submit.prevent="submit">
-                <div class="mb-3">
-                    <label for="name" class="form-label">Name</label>
+            <form @submit.prevent="submit">
+                <div class="pt-3">
+                    <label class="label label-text" for="name">Name</label>
                     <input
                         type="text"
                         name="name"
                         v-model="name"
-                        class="form-control"
+                        class="input max-w-lg"
                     />
                 </div>
-                <div class="mb-3">
-                    <label for="completed" class="form-label">Completed</label>
-                    <select class="form-select" v-model="completed">
+                <div class="pt-3">
+                    <label class="label label-text" for="completed"
+                        >Completed</label
+                    >
+                    <select
+                        class="select max-w-lg appearance-none"
+                        aria-label="select"
+                        v-model="completed"
+                    >
                         <option value="false">False</option>
                         <option value="true">True</option>
                     </select>
                 </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="submit" class="btn btn-primary my-2">
+                    Submit
+                </button>
             </form>
             <br />
         </div>
-    </section>
+    </div>
 </template>
 
 <script>
@@ -65,9 +72,3 @@ export default defineComponent({
     }
 })
 </script>
-
-<style lang="less" scoped>
-#create-button {
-    margin-bottom: 1em;
-}
-</style>

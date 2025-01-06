@@ -1,47 +1,45 @@
 <template>
-    <div class="container">
+    <div class="container mx-auto py-10 overflow-x-auto h-fit">
         <CreateTask />
-        <div class="table-responsive">
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th scope="col">Id</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">Completed</th>
-                        <th scope="col">Created</th>
-                        <th scope="col">Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="task in tasks" :key="task.id">
-                        <td>{{ task.id }}</td>
-                        <td>{{ task.name }}</td>
-                        <td>{{ task.completed }}</td>
-                        <td>{{ task.created_at }}</td>
-                        <td>
-                            <router-link
-                                :to="{
-                                    name: 'EditTask',
-                                    params: {
-                                        id: task.id
-                                    }
-                                }"
-                                class="btn btn-warning"
-                            >
-                                Edit </router-link
-                            >&nbsp;
-                            <button
-                                class="btn btn-danger"
-                                @click="removeTask(task.id)"
-                            >
-                                Delete
-                            </button>
-                            <br />
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Id</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Completed</th>
+                    <th scope="col">Created</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="task in tasks" :key="task.id">
+                    <td>{{ task.id }}</td>
+                    <td>{{ task.name }}</td>
+                    <td>{{ task.completed }}</td>
+                    <td>{{ task.created_at }}</td>
+                    <td>
+                        <router-link
+                            :to="{
+                                name: 'EditTask',
+                                params: {
+                                    id: task.id
+                                }
+                            }"
+                            class="btn btn-warning"
+                        >
+                            Edit </router-link
+                        >&nbsp;
+                        <button
+                            class="btn btn-error"
+                            @click="removeTask(task.id)"
+                        >
+                            Delete
+                        </button>
+                        <br />
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </template>
 

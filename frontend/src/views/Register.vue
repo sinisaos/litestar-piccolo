@@ -1,124 +1,126 @@
 <template>
-    <div class="container">
-        <div class="row justify-content-center mt-5">
-            <div class="col-lg-4 col-md-4 col-sm-4">
-                <div class="card">
-                    <div class="card-title text-center">
-                        <h3 class="p-3">Register</h3>
-                        <div
-                            v-if="error"
-                            v-on:click="error = false"
-                            class="alert alert-danger"
-                            role="alert"
+    <div class="flex justify-center items-center py-7">
+        <div class="card sm:max-w-sm">
+            <div class="card">
+                <div class="card-title text-center">
+                    <h3 class="p-3">Register</h3>
+                    <div
+                        v-if="error"
+                        v-on:click="error = false"
+                        class="alert alert-soft alert-error removing:translate-x-5 removing:opacity-0 flex items-center gap-4 transition duration-300"
+                        role="alert"
+                        id="dismiss-alert1"
+                    >
+                        User already exists. Please try again.
+                        <button
+                            class="ms-auto leading-none"
+                            data-remove-element="#dismiss-alert1"
+                            aria-label="Close Button"
                         >
-                            User already exists. Please try again.
+                            <span class="icon-[tabler--x] size-5"></span>
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <form @submit.prevent="submit">
+                        <div class="mb-3">
+                            <label for="username" class="form-label"
+                                >Username:</label
+                            >
+                            <input
+                                type="text"
+                                name="username"
+                                v-model="username"
+                                class="input max-w-sm"
+                                :class="{
+                                    'is-invalid': v$.username.$error
+                                }"
+                            />
+                            <div
+                                class="input-errors"
+                                v-for="error of v$.username.$errors"
+                                :key="error.$uid"
+                            >
+                                <div class="error-msg text-red-500">
+                                    {{ error.$message }}
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="card-body">
-                        <form @submit.prevent="submit">
-                            <div class="mb-3">
-                                <label for="username" class="form-label"
-                                    >Username:</label
-                                >
-                                <input
-                                    type="text"
-                                    name="username"
-                                    v-model="username"
-                                    class="form-control"
-                                    :class="{
-                                        'is-invalid': v$.username.$error
-                                    }"
-                                />
-                            </div>
-                            <div class="mb-3">
-                                <label for="email" class="form-label"
-                                    >Email:</label
-                                >
-                                <input
-                                    type="text"
-                                    name="email"
-                                    v-model="email"
-                                    class="form-control"
-                                    :class="{ 'is-invalid': v$.email.$error }"
-                                />
-                                <div
-                                    v-if="v$.email.$error"
-                                    class="invalid-feedback"
-                                >
-                                    <span v-if="!v$.email.required"
-                                        >Email is required</span
-                                    >
-                                    <span v-if="!v$.email.email"
-                                        >Email is invalid</span
-                                    >
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email:</label>
+                            <input
+                                type="text"
+                                name="email"
+                                v-model="email"
+                                class="input max-w-sm"
+                                :class="{ 'is-invalid': v$.email.$error }"
+                            />
+                            <div
+                                class="input-errors"
+                                v-for="error of v$.email.$errors"
+                                :key="error.$uid"
+                            >
+                                <div class="error-msg text-red-500">
+                                    {{ error.$message }}
                                 </div>
                             </div>
-                            <div class="mb-3">
-                                <label for="password" class="form-label"
-                                    >Password:</label
-                                >
-                                <input
-                                    type="password"
-                                    name="password"
-                                    v-model="password"
-                                    class="form-control"
-                                    :class="{
-                                        'is-invalid': v$.password.$error
-                                    }"
-                                />
-                                <div
-                                    v-if="v$.password.$error"
-                                    class="invalid-feedback"
-                                >
-                                    <span v-if="!v$.password.required"
-                                        >Password is required</span
-                                    >
-                                    <span v-if="!v$.password.minLength"
-                                        >Password must be at least 6
-                                        characters</span
-                                    >
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label"
+                                >Password:</label
+                            >
+                            <input
+                                type="password"
+                                name="password"
+                                v-model="password"
+                                class="input max-w-sm"
+                                :class="{
+                                    'is-invalid': v$.password.$error
+                                }"
+                            />
+                            <div
+                                class="input-errors"
+                                v-for="error of v$.password.$errors"
+                                :key="error.$uid"
+                            >
+                                <div class="error-msg text-red-500">
+                                    {{ error.$message }}
                                 </div>
                             </div>
-                            <div class="mb-3">
-                                <label for="confirm_password" class="form-label"
-                                    >Confirm password:</label
-                                >
-                                <input
-                                    type="password"
-                                    name="password"
-                                    v-model="passwordConfirmation"
-                                    class="form-control"
-                                    :class="{
-                                        'is-invalid':
-                                            v$.passwordConfirmation.$error
-                                    }"
-                                />
-                                <div
-                                    v-if="v$.passwordConfirmation.$error"
-                                    class="invalid-feedback"
-                                >
-                                    <span
-                                        v-if="!v$.passwordConfirmation.required"
-                                        >Confirm Password is required</span
-                                    >
-                                    <span
-                                        v-else-if="
-                                            !v$.passwordConfirmation
-                                                .sameAsPassword
-                                        "
-                                        >Passwords must match</span
-                                    >
+                        </div>
+                        <div class="mb-3">
+                            <label for="confirm_password" class="form-label"
+                                >Confirm password:</label
+                            >
+                            <input
+                                type="password"
+                                name="password"
+                                v-model="passwordConfirmation"
+                                class="input max-w-sm"
+                                :class="{
+                                    'is-invalid': v$.passwordConfirmation.$error
+                                }"
+                            />
+                            <div
+                                class="input-errors"
+                                v-for="error of v$.passwordConfirmation.$errors"
+                                :key="error.$uid"
+                            >
+                                <div class="error-msg text-red-500">
+                                    {{ error.$message }}
                                 </div>
                             </div>
-                            <button type="submit" class="btn btn-primary">
-                                Submit
-                            </button>
-                            <p class="account">
-                                Already have account
-                                <router-link to="/login">Sign In</router-link>
-                            </p>
-                        </form>
-                    </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            Submit
+                        </button>
+                        <p class="mt-4">
+                            Already have account
+                            <router-link to="/login"
+                                ><b>Sign In</b></router-link
+                            >
+                        </p>
+                    </form>
                 </div>
             </div>
         </div>
@@ -182,9 +184,3 @@ export default defineComponent({
     }
 })
 </script>
-
-<style lang="less" scoped>
-.account {
-    padding-top: 1rem;
-}
-</style>

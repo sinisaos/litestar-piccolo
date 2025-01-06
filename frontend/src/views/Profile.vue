@@ -1,45 +1,47 @@
 <template>
-    <div class="container">
-        <h2>Profile</h2>
-        <ul class="list-group" v-if="loggedUser">
-            <li
-                class="list-group-item d-flex justify-content-between align-items-center"
-            >
-                <strong>Username</strong>
-                <span>{{ loggedUser.user.username }}</span>
-            </li>
-            <li
-                class="list-group-item d-flex justify-content-between align-items-center"
-            >
-                <strong>Email</strong>
-                <span>{{ loggedUser.user.email }}</span>
-            </li>
-            <li
-                class="list-group-item d-flex justify-content-between align-items-center"
-            >
-                <strong>Last login</strong>
-                <span>{{
-                    loggedUser.user.last_login.slice(0, -7).replace("T", " ")
-                }}</span>
-            </li>
-            <li
-                class="list-group-item d-flex justify-content-between align-items-center"
-            >
-                <strong
-                    ><router-link to="/dashboard">Tasks</router-link></strong
-                >
-                <span class="badge bg-primary rounded-pill">{{
-                    tasks?.length
-                }}</span>
-            </li>
-            <li
-                class="list-group-item d-flex justify-content-between align-items-center"
-            >
-                <button v-on:click="deleteAccount()" class="btn btn-danger">
-                    Delete Account
-                </button>
-            </li>
-        </ul>
+    <div class="container mx-auto py-10 my-13">
+        <div class="card shadow">
+            <div class="card-body">
+                <h5 class="card-title mb-2.5">User profile</h5>
+                <ul v-if="loggedUser" class="divide-base-content/25 divide-y">
+                    <li class="w-72 p-3">
+                        <strong>Username </strong>
+                        <span>{{ loggedUser.user.username }}</span>
+                    </li>
+                    <li class="p-3">
+                        <strong>Email </strong>
+                        <span>{{ loggedUser.user.email }}</span>
+                    </li>
+                    <li class="p-3">
+                        <strong>Last login </strong>
+                        <span>{{
+                            loggedUser.user.last_login
+                                .slice(0, -7)
+                                .replace("T", " ")
+                        }}</span>
+                    </li>
+                    <li class="p-3">
+                        <strong
+                            ><router-link to="/dashboard"
+                                >Tasks
+                            </router-link></strong
+                        >
+                        <span
+                            class="badge badge-soft badge-info badge-md ms-2 rounded-full"
+                            >{{ tasks?.length }}</span
+                        >
+                    </li>
+                    <li class="py-2">
+                        <button
+                            v-on:click="deleteAccount()"
+                            class="btn btn-error"
+                        >
+                            Delete Account
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
     </div>
 </template>
 

@@ -1,6 +1,8 @@
 import { createApp } from 'vue'
 import axios from 'axios'
 import Cookies from "js-cookie"
+import './index.css'
+import 'flyonui/flyonui'
 
 import App from './App.vue'
 import router from './router'

@@ -1,126 +1,80 @@
 <template>
-    <header>
-        <nav class="navbar navbar-expand-md navbar-light">
-            <div class="container">
-                <router-link class="navbar-brand" to="/"
-                    >Litestar | Piccolo</router-link
+    <nav class="navbar rounded-0 justify-between gap-4 shadow">
+        <div class="w-full md:flex md:items-center md:gap-2">
+            <div class="flex items-center justify-between">
+                <div
+                    class="navbar-start items-center justify-between max-md:w-full"
                 >
-                <button
-                    class="navbar-toggler"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#navbarScroll"
-                    aria-controls="navbarScroll"
-                    aria-expanded="false"
-                    aria-label="Toggle navigation"
-                >
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarScroll">
-                    <ul
-                        v-if="isAuthenticated"
-                        class="navbar-nav ms-auto mb-2 mb-md-0"
+                    <router-link
+                        class="link text-base-content link-neutral text-xl font-semibold no-underline"
+                        to="/"
+                        >Starter</router-link
                     >
-                        <li class="nav-link">
-                            <input
-                                @change="toggleTheme"
-                                id="checkbox"
-                                type="checkbox"
-                                class="switch-checkbox"
-                            />
-                            <label for="checkbox" id="switch-theme-icon">
-                                <span v-if="userTheme === 'light-theme'"
-                                    >🌙</span
-                                >
-                                <span v-else>☀️</span>
-                                <div
-                                    class="switch-toggle"
-                                    :class="{
-                                        'switch-toggle-checked':
-                                            userTheme === 'dark-theme'
-                                    }"
-                                ></div>
-                            </label>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a
-                                class="nav-link dropdown-toggle"
-                                href="#"
-                                id="navbarDropdown"
-                                role="button"
-                                data-bs-toggle="dropdown"
-                                aria-expanded="false"
-                            >
-                                Hello {{ stateUser.user.username }}
-                            </a>
-                            <ul
-                                class="dropdown-menu"
-                                aria-labelledby="navbarDropdown"
-                            >
-                                <li>
-                                    <router-link
-                                        class="dropdown-item"
-                                        to="/profile"
-                                        >Profile</router-link
-                                    >
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" v-on:click="logout"
-                                        >Logout</a
-                                    >
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                    <ul v-else class="navbar-nav ms-auto mb-2 mb-md-0">
-                        <li class="nav-link">
-                            <input
-                                @change="toggleTheme"
-                                id="checkbox"
-                                type="checkbox"
-                                class="switch-checkbox"
-                            />
-                            <label for="checkbox" id="switch-theme-icon">
-                                <span v-if="userTheme === 'light-theme'"
-                                    >🌙</span
-                                >
-                                <span v-else>☀️</span>
-                                <div
-                                    class="switch-toggle"
-                                    :class="{
-                                        'switch-toggle-checked':
-                                            userTheme === 'dark-theme'
-                                    }"
-                                ></div>
-                            </label>
-                        </li>
-                        <li class="nav-item">
-                            <router-link class="nav-link" to="/login"
-                                >Log In</router-link
-                            >
-                        </li>
-                        <li class="nav-item">
-                            <router-link class="nav-link" to="/register"
-                                >Register</router-link
-                            >
-                        </li>
-                    </ul>
+                    <div class="md:hidden">
+                        <button
+                            type="button"
+                            class="collapse-toggle btn btn-outline btn-secondary btn-sm btn-square"
+                            data-collapse="#dropdown-navbar-collapse"
+                            aria-controls="dropdown-navbar-collapse"
+                            aria-label="Toggle navigation"
+                        >
+                            <span
+                                class="icon-[tabler--menu-2] collapse-open:hidden size-4"
+                            ></span>
+                            <span
+                                class="icon-[tabler--x] collapse-open:block hidden size-4"
+                            ></span>
+                        </button>
+                    </div>
                 </div>
             </div>
-        </nav>
-    </header>
+            <div
+                id="dropdown-navbar-collapse"
+                class="md:navbar-end collapse hidden grow basis-full overflow-hidden transition-[height] duration-300 max-md:w-full"
+            >
+                <label class="menu">
+                    <input
+                        type="checkbox"
+                        value="dark"
+                        class="switch theme-controller"
+                    />
+                </label>
+                <ul
+                    v-if="!isAuthenticated"
+                    class="menu md:menu-horizontal gap-2 p-0 text-base max-md:mt-2"
+                >
+                    <li>
+                        <router-link to="/login">Login</router-link>
+                    </li>
+                    <li>
+                        <router-link to="/register">Register</router-link>
+                    </li>
+                </ul>
+                <ul
+                    v-if="isAuthenticated"
+                    class="menu md:menu-horizontal gap-2 p-0 text-base max-md:mt-2"
+                >
+                    <li>
+                        <router-link to="/profile">Profile</router-link>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" v-on:click="logout">Logout</a>
+                    </li>
+                </ul>
+
+                <!-- </li>
+                </ul> -->
+            </div>
+        </div>
+    </nav>
 </template>
+
 
 <script>
 import { defineComponent } from "vue"
 import { mapGetters } from "vuex"
 
 export default defineComponent({
-    data() {
-        return {
-            userTheme: "light-theme"
-        }
-    },
     computed: {
         ...mapGetters(["isAuthenticated", "stateUser"])
     },
@@ -128,29 +82,7 @@ export default defineComponent({
         async logout() {
             await this.$store.dispatch("logoutUser")
             this.$router.push("/").catch((err) => {})
-        },
-        setTheme(theme) {
-            localStorage.setItem("user-theme", theme)
-            this.userTheme = theme
-            document.documentElement.className = theme
-        },
-        toggleTheme() {
-            const activeTheme = localStorage.getItem("user-theme")
-            if (activeTheme === "light-theme") {
-                this.setTheme("dark-theme")
-            } else {
-                this.setTheme("light-theme")
-            }
-        }
-    },
-    watch: {
-        $route() {
-            document.querySelector("#navbarScroll").classList.remove("show")
         }
     }
 })
 </script>
-
-<style lang="less">
-@import "../main.less";
-</style>
