@@ -61,14 +61,10 @@
                         <a class="dropdown-item" v-on:click="logout">Logout</a>
                     </li>
                 </ul>
-
-                <!-- </li>
-                </ul> -->
             </div>
         </div>
     </nav>
 </template>
-
 
 <script>
 import { defineComponent } from "vue"

@@ -45,7 +45,6 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex"
-
 import CreateTask from "../components/CreateTask.vue"
 import { defineComponent } from "vue"
 

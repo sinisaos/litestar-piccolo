@@ -13,6 +13,7 @@ const getters = {
 const actions = {
   async loginUser(context, user) {
     const response = await axios.post('accounts/login', user)
+    console.log(response.data.error)
     context.dispatch('userProfile', response.data)
   },
   async userProfile(context) {
