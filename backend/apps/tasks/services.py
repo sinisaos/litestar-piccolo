@@ -7,11 +7,14 @@ from apps.tasks.tables import Task
 class TaskService:
 
     async def task_single(self, task_id: int) -> TaskModelOut:
-        return (
+        task = (
             await Task.select()
             .where(Task._meta.primary_key == task_id)
             .first()
         )
+        if not task:
+            raise NotFoundException("Task does not exist")
+        return TaskModelOut(**task)
 
     async def task_create(
         self, data: TaskModelIn, session_user: dict
@@ -20,7 +23,7 @@ class TaskService:
         data_map["task_user"] = session_user["user"]["id"]
         task = Task(**data_map)
         await task.save()
-        return task.to_dict()
+        return TaskModelOut(**task.to_dict())
 
     async def task_update(
         self, task_id: int, data: TaskModelIn, session_user: dict
@@ -33,7 +36,7 @@ class TaskService:
             setattr(task, key, value)
 
         await task.save()
-        return task.to_dict()
+        return TaskModelOut(**task.to_dict())
 
     async def task_delete(self, task_id: int) -> None:
         task = await Task.objects().get(Task._meta.primary_key == task_id)

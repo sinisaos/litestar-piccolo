@@ -1,4 +1,4 @@
-litestar==2.11.0
+litestar
 uvicorn
 jinja2
 piccolo[postgres]

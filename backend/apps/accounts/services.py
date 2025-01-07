@@ -43,12 +43,13 @@ class AuthService:
     async def user_profile_tasks(
         self, session_user: dict
     ) -> t.List[TaskModelOut]:
-        return (
+        data = (
             await Task.select()
             .where(Task.task_user == session_user["user"]["id"])
             .order_by(Task._meta.primary_key, ascending=False)
             .run()
         )
+        return [TaskModelOut(**row) for row in data]
 
     async def user_delete(self, session_user: dict) -> None:
         """

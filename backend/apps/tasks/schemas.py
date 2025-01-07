@@ -1,17 +1,16 @@
-import typing as t
+from datetime import datetime
 
-from piccolo_api.crud.serializers import create_pydantic_model
+from pydantic import BaseModel
 
-from apps.tasks.tables import Task
 
-# task models
-TaskModelIn: t.Any = create_pydantic_model(
-    table=Task,
-    exclude_columns=(Task.created_at, Task.task_user),
-    model_name="TaskModelIn",
-)
-TaskModelOut: t.Any = create_pydantic_model(
-    table=Task,
-    include_default_columns=True,
-    model_name="TaskModelOut",
-)
+class TaskModelIn(BaseModel):
+    name: str
+    completed: bool
+
+
+class TaskModelOut(BaseModel):
+    id: int
+    name: str
+    completed: bool
+    created_at: datetime
+    task_user: int
